@@ -37,7 +37,7 @@ print(lottoCountData)
 
 lottoSeries = pd.Series(lottoCountData)  # DataFrame을 Series로 변환
 print(lottoSeries)
-lottoSeries = lottoSeries.sort_index()  # 로또 번호(1~45 순서) 오름차순 정렬
+lottoSeries = lottoSeries.sort_index(ascending=False)  # 로또 번호(1~45 순서) 오름차순 정렬
 print(lottoSeries)
 
 lottoSeries.plot(figsize=(10,10), kind="barh", grid=True, title="로또 당첨 번호별 통계")
