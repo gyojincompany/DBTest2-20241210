@@ -29,6 +29,7 @@ def get_lottoNumber(lottocount):  # 로또 회차를 넣으면 해당 회차의 
 
     # 로또 당첨 보너스 번호 1개를 반환
     bonusNumber = int(soup.find("div", {"class": "num bonus"}).find("p").text.strip())
+    # bonusNumber = int(bonusNumber)
     # 로또 추첨일 반환
     lottoDate = soup.find("p", {"class": "desc"}).text.strip()
     # print(lottoDate)
@@ -42,7 +43,7 @@ lottoNumList = []  # 로또 당첨 결과 레코드가 저장될 빈 리스트
 #{"count":로또추첨회차, "lottoDate":추첨일, "lottoNum1":당첨번호1번, "lottoNum2":당첨번호2번,...."bonusNum":보너스번호}
 
 
-for count in range(1, 11):  # 1~1150회까지 반복
+for count in range(1, get_recent_lottocount()+1):  # 1~1150회까지 반복
     lottoResult = get_lottoNumber(count)  # 해당 회차의 로또당첨결과를 반환
 
     lottoNumList.append(
@@ -64,9 +65,15 @@ for count in range(1, 11):  # 1~1150회까지 반복
 # print(lottoNumList)
 
 # lottoNumList를 DataFrame으로 변환
-lotto_df = pd.DataFrame(data=lottoNumList, columns=["count","lottoDate","lottoNum1","lottoNum2","lottoNum3","lottoNum4","lottoNum5","lottoNum6","bonusNums"])
+lotto_df = pd.DataFrame(data=lottoNumList, columns=["count","lottoDate","lottoNum1","lottoNum2","lottoNum3","lottoNum4","lottoNum5","lottoNum6","bonusNum"])
 
-print(lotto_df)
+# print(lotto_df)
+
+# 파이썬과 DB과 연동
+engine = create_engine("mysql+pymysql://root:12345@localhost:3306/lotto?charset=utf8mb4")
+engine.connect()
+
+lotto_df.to_sql(con=engine, name="lottotbl", index=False, if_exists="replace")
 
 
 
