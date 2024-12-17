@@ -12,7 +12,7 @@ def get_recent_lottocount(): # 최신 로또 회차 크롤링 함수(2024년 12�
     soup = BeautifulSoup(html.text, "html.parser")
     recentCount = soup.find("strong", {"id": "lottoDrwNo"}).text.strip()  # 가장 최근의 로또 회차 번호
     recentCount = int(recentCount)  # range 함수에 넣을 값이므로 int로 변환
-    print(f"로또 최신회차 : {recentCount}")
+    # print(f"로또 최신회차 : {recentCount}")
     return recentCount  # 최신 회차 값을 최종적으로 반환
 
 def get_lottoNumber(lottocount):  # 로또 회차를 넣으면 해당 회차의 로또당첨결과를 반환하는 함수
@@ -31,10 +31,9 @@ def get_lottoNumber(lottocount):  # 로또 회차를 넣으면 해당 회차의 
     bonusNumber = int(soup.find("div", {"class": "num bonus"}).find("p").text.strip())
     # 로또 추첨일 반환
     lottoDate = soup.find("p", {"class": "desc"}).text.strip()
-    print(lottoDate)
+    # print(lottoDate)
     lottoDate = datetime.datetime.strptime(lottoDate, "(%Y년 %m월 %d일 추첨)")  # 문자열 날짜->날짜 type 으로 변환
-    print(lottoDate)
-
+    # print(lottoDate)
     lottoData = {"date": lottoDate, "lottoNum": lottoNumberList, "bonusNum": bonusNumber}  # 한 회차의 로또 당첨 결과 레코드
 
     return lottoData
@@ -60,8 +59,14 @@ for count in range(1, 11):  # 1~1150회까지 반복
         }
     )
 
+    print(f"{count}회차 처리 진행 중......")
 
-print(lottoNumList)
+# print(lottoNumList)
+
+# lottoNumList를 DataFrame으로 변환
+lotto_df = pd.DataFrame(data=lottoNumList, columns=["count","lottoDate","lottoNum1","lottoNum2","lottoNum3","lottoNum4","lottoNum5","lottoNum6","bonusNums"])
+
+print(lotto_df)
 
 
 
